@@ -11,6 +11,23 @@ window.onload = function () {
   let clicke = true;
   let play = "X";
 
+  // Function to reset the game state
+  function resetGame() {
+    plays = [null, null, null, null, null, null, null, null, null];
+    play = "X";
+    status.innerHTML =
+      "Move your mouse over a square and click to play an X or an O.";
+    status.classList.remove("you-won");
+
+    divs.forEach((elem) => {
+      elem.innerHTML = "";
+      elem.classList.remove("X", "O", "hover");
+    });
+  }
+
+  // Add a button to reset the game
+  button.addEventListener("click", resetGame);
+
   // Function to check for a winner
   function checkWinner() {
     const winningCombinations = [
