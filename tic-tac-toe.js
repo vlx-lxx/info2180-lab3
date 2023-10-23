@@ -41,6 +41,13 @@ window.onload = function () {
 
       console.log(clicke);
       console.log(plays);
+
+      elem.addEventListener("mouseover", function () {
+        elem.classList.add("hover");
+      });
+      elem.addEventListener("mouseout", function () {
+        elem.classList.remove("hover");
+      });
     });
   });
 
