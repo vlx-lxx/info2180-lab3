@@ -11,43 +11,59 @@ window.onload = function () {
   let clicke = true;
   let play = "X";
 
+  // Function to check for a winner
+  function checkWinner() {
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8], // Rows
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8], // Columns
+      [0, 4, 8],
+      [2, 4, 6], // Diagonals
+    ];
+
+    for (const combination of winningCombinations) {
+      const [a, b, c] = combination;
+      if (plays[a] && plays[a] === plays[b] && plays[a] === plays[c]) {
+        status.innerHTML = `Congratulations! ${play} is the Winner!`;
+        status.classList.add("you-won");
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   // Loop through the divs and set the "class" attribute to "square" for each of them
   divs.forEach((elem, index) => {
     elem.setAttribute("class", "square");
-    console.log(elem, index);
 
     elem.addEventListener("click", function () {
-      if (clicke) {
-        clicke = false;
-      } else {
-        clicke = true;
+      if (plays[index] || status.classList.contains("you-won")) {
+        return; // If there's already a winner or the square is already filled, do nothing
       }
 
       plays[index] = play;
       elem.innerHTML = play;
       elem.classList.add(play);
 
-      if (play == "O") {
-        play = "X";
-        plays[index] = play;
-        elem.innerHTML = play;
-        elem.classList.add(play);
-      } else {
-        play = "O";
-        plays[index] = play;
-        elem.innerHTML = play;
-        elem.classList.add(play);
+      if (checkWinner()) {
+        return; // If a winner is found, no need to continue the game
       }
 
-      console.log(clicke);
-      console.log(plays);
+      play = play === "X" ? "O" : "X"; // Toggle between X and O
+    });
 
-      elem.addEventListener("mouseover", function () {
+    elem.addEventListener("mouseover", function () {
+      if (!plays[index]) {
         elem.classList.add("hover");
-      });
-      elem.addEventListener("mouseout", function () {
-        elem.classList.remove("hover");
-      });
+      }
+    });
+
+    elem.addEventListener("mouseout", function () {
+      elem.classList.remove("hover");
     });
   });
 
